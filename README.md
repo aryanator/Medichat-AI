@@ -1,122 +1,109 @@
 # MediChat-AI: Healthcare LLM Assistant
 
-![Demo](https://ai-health-chatbot.streamlit.app/?text=MediChat-AI+Demo) <!-- Add actual demo GIF/screenshot -->
+[![Streamlit Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-health-chatbot.streamlit.app/)
+![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
 
-An AI-powered healthcare chatbot that provides accurate medical information using **LLM (Llama 3.1)** and **intent classification**. Deployed with AWS cloud infrastructure.
+An AI-powered healthcare chatbot combining **Llama 3.1** for generation and **DistilBERT** for intent classification, deployable via Streamlit/Flask or AWS infrastructure.
 
 ## Features
-- 🩺 **Specialized Medical QA**: Fine-tuned responses for healthcare queries
-- ⚡ **Dual-Model Architecture**: 
-  - DistilBERT for intent classification
-  - T5/Llama-3 for answer generation
-- 🌐 **Multi-Deployment Ready**:
-  - Streamlit prototype (local/dev)
-  - Flask API (production)
-  - AWS EC2 + S3 (cloud deployment)
+- 🩺 **Medical-Specific Responses**: Context-aware healthcare answers
+- 🧠 **Dual-Model Pipeline**:
+  - Intent classification (DistilBERT)
+  - Answer generation (T5/Llama-3)
+- 🚀 **Flexible Deployment**:
+  - Streamlit prototype
+  - Flask REST API
+  - AWS EC2 + S3 (production)
 
-## Installation
-
-### Prerequisites
-- Python 3.9+
-- [Together.ai API key](https://together.ai) (for Llama-3)
-- AWS account (for cloud deployment)
-
-
+## Quick Start
+```bash
 git clone https://github.com/yourusername/MediChat-AI.git
 cd MediChat-AI
 pip install -r requirements.txt
 
+# Set API key (get from https://together.ai)
+echo "TOGETHER_API_KEY=your_key_here" > .env
 
-Configuration
-API Keys:
-
-bash
-Copy
-echo "TOGETHER_API_KEY=your_api_key_here" > .env
-Replace with your Together.ai API key
-
-Model Paths:
-
-Place your trained models in:
-
-./intent_classifier_minimal/
-
-./generator_minimal/
-
-Or configure S3 paths in llm.py (for AWS deployment)
-
-Usage
-Local Prototype (Streamlit)
-bash
-Copy
+# Run Streamlit demo
 streamlit run app.py
-Runs on http://localhost:8501
+```
 
-Production API (Flask)
-bash
-Copy
-python chatbot_webapp.py
-API endpoint: POST /ask with JSON {"question": "your question"}
+## Project Structure
+```
+├── app.py                # Streamlit interface
+├── chatbot_webapp.py     # Flask API
+├── llm.py                # Together.ai LLM wrapper
+├── requirements.txt      # Python dependencies
+├── /models               # For local model storage
+│   ├── intent_classifier_minimal
+│   └── generator_minimal
+```
 
-Deployment
-AWS Infrastructure
-mermaid
-Copy
-graph TD
-    A[EC2 Instance] -->|Load Models| B(S3 Bucket)
-    A -->|Serve API| C(CloudFront)
+## Deployment Options
+
+### 1. Local Development
+```bash
+streamlit run app.py  # Demo on http://localhost:8501
+python chatbot_webapp.py  # Flask API on :5000
+```
+
+### 2. AWS Production
+```mermaid
+graph LR
+    A[EC2 Instance] -->|Load| B(S3 Models)
+    A -->|Serve| C(API Gateway)
     D[User] -->|HTTPS| C
-Key Components:
+```
+**Requirements**:
+- EC2 instance (GPU recommended)
+- S3 bucket for models
+- IAM roles with S3 access
 
-EC2: t2.xlarge instance (GPU recommended)
+*⚠️ AWS configuration not included - set your own credentials*
 
-S3: Model storage (set AWS_ACCESS_KEY_ID in env)
-
-Security: Configure IAM roles for S3 access
-
-⚠️ AWS credentials are not included in this repo - configure your own in production
-
-Architecture
-mermaid
-Copy
+## Architecture
+```mermaid
 sequenceDiagram
-    User->>+Frontend: Ask question
-    Frontend->>+Intent Classifier: Classify query
-    Intent Classifier->>+Answer Generator: Focus area + question
-    Answer Generator->>+LLM: Augmented prompt
-    LLM-->>-User: Verified response
-Contributing
-Fork the repository
+    User->>UI: Ask question
+    UI->>Intent Classifier: Get focus area
+    Intent Classifier->>Answer Engine: Structured prompt
+    Answer Engine->>LLM: Augmented request
+    LLM->>User: Verified response
+```
 
-Create feature branch (git checkout -b feature/your-feature)
+## Contributing
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add feature'`)
+4. Push (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Commit changes (git commit -m 'Add some feature')
+## License
+Apache 2.0 - See [LICENSE](LICENSE)
+```
 
-Push to branch (git push origin feature/your-feature)
+### Key Improvements:
+1. **Fixed Formatting**:
+   - Correct Markdown syntax for code blocks
+   - Added proper badges (Streamlit/Python)
 
-Open a Pull Request
+2. **Simplified Setup**:
+   - Consolidated installation into one code block
+   - Clearer API key instructions
 
-License
-Apache 2.0 - See LICENSE
+3. **Enhanced Visuals**:
+   - Directory tree structure
+   - Streamlit demo badge
 
-Note: This repository contains prototype code. For production deployment:
+4. **Production Notes**:
+   - Explicit AWS disclaimer
+   - Architecture diagrams before deployment steps
 
-Replace all placeholder API keys
+5. **Removed Redundancies**:
+   - Trimmed duplicate deployment explanations
+   - More concise feature list
 
-Configure AWS services separately
-
-Add error handling and monitoring
-
-Copy
-
-### Key Documentation Features:
-1. **Clear API Key Warning**: Prominent notice about replacing credentials
-2. **AWS Abstraction**: Mentions cloud deployment without exposing configs
-3. **Dual Deployment Paths**: Highlights both local (Streamlit) and production (Flask) options
-4. **Visual Architecture**: Mermaid diagrams for system design
-5. **Contributor-Friendly**: Standard open-source workflow
-
-Would you like me to add:
-1. Screenshot templates?
-2. Detailed AWS setup guide (in separate .md)?
-3. Testing instructions?
+Would you like me to:
+1. Add a "Testing" section with example queries?
+2. Include a troubleshooting guide?
+3. Add screenshots of the interface?
