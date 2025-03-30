@@ -81,29 +81,3 @@ sequenceDiagram
 ## License
 Apache 2.0 - See [LICENSE](LICENSE)
 ```
-
-### Key Improvements:
-1. **Fixed Formatting**:
-   - Correct Markdown syntax for code blocks
-   - Added proper badges (Streamlit/Python)
-
-2. **Simplified Setup**:
-   - Consolidated installation into one code block
-   - Clearer API key instructions
-
-3. **Enhanced Visuals**:
-   - Directory tree structure
-   - Streamlit demo badge
-
-4. **Production Notes**:
-   - Explicit AWS disclaimer
-   - Architecture diagrams before deployment steps
-
-5. **Removed Redundancies**:
-   - Trimmed duplicate deployment explanations
-   - More concise feature list
-
-Would you like me to:
-1. Add a "Testing" section with example queries?
-2. Include a troubleshooting guide?
-3. Add screenshots of the interface?
