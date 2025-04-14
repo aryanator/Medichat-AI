@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Health Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .chat-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #3498db;
+            color: white;
+            text-align: right;
+        }
+        .bot-message {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            resize: none;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>AI Health Assistant</h1>
+        <div id="chat-box" class="chat-box"></div>
+        <textarea id="user_input" placeholder="Ask your health-related question..." rows="3"></textarea>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("user_input").value;
+            if (!userInput.trim()) return;
+
+            addMessage(userInput, 'user-message');
+            document.getElementById("user_input").value = '';
+
+            fetch("/ask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ "question": userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.answer) {
+                    addMessage(data.answer, 'bot-message');
+                } else {
+                    addMessage("Error: " + data.error, 'bot-message');
+                }
+            })
+            .catch(error => {
+                addMessage("An error occurred: " + error.message, 'bot-message');
+            });
+        }
+
+        function addMessage(text, className) {
+            const chatBox = document.getElementById("chat-box");
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message", className);
+            messageElement.textContent = text;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
