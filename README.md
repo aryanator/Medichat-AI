@@ -5,7 +5,8 @@
 
 An AI-powered healthcare chatbot combining **Llama 3.1** for generation and **DistilBERT** for intent classification, deployable via Streamlit/Flask or AWS infrastructure.
 
-## Images
+## Demo
+![Result](Images-MCB/medichat-demo.gif)
 ![Result](Images-MCB/mcb1.png)
 
 ## Features
